@@ -1,3 +1,4 @@
+require "pry"
 class CashRegister
   attr_accessor :total, :discount, :price, :items
 
@@ -8,22 +9,22 @@ class CashRegister
   end
 
   def add_item(item, price, quantity=1)
-    @price=price
-    @total += price * quantity
+    @last_transaction=price * quantity
+    @total += @last_transaction
     if quantity > 1
        counter=0
        while counter < quantity
-         @items << items
+         @items << item
          counter += 1
        end
      else
-       @items << items
+       @items << item
      end
   end
 
   def apply_discount
   if @discount > 0
-    @to_take_off = (price * discount)/100
+    @to_take_off = (@last_transaction * discount)/100
     @total -= @to_take_off
     return "After the discount, the total comes to $#{total}."
   else
@@ -31,8 +32,12 @@ class CashRegister
   end
 end
 
+def items
+  @items
+end
+
 def void_last_transaction
-  @total -= @price
+  @total -= @last_transaction
 end
 
 
